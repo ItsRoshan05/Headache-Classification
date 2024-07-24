@@ -1,2 +1,5 @@
 .venv
 AdminLTE-3.2.0/
+__pyache__
+testing/
+config.py

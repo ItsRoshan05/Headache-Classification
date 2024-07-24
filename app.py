@@ -1,45 +1,72 @@
-from flask import Flask, request, render_template
-import numpy as np
-import pandas as pd
+from flask import Flask, render_template, redirect, url_for, flash, session
+from flask_mysqldb import MySQL
+from flask_bcrypt import Bcrypt
+from forms import RegistrationForm, LoginForm
+from config import Config
 
 app = Flask(__name__)
+app.config.from_object(Config)
 
-# Contoh data obat sakit kepala
+mysql = MySQL(app)
+bcrypt = Bcrypt(app)
 
-df = pd.read_csv('data/dataset_int.csv')
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    form = RegistrationForm()
+    if form.validate_on_submit():
+        hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
+        cur = mysql.connection.cursor()
+        cur.execute("INSERT INTO user (username, email, password) VALUES (%s, %s, %s)",
+                    (form.username.data, form.email.data, hashed_password))
+        mysql.connection.commit()
+        cur.close()
+        flash('Your account has been created!', 'success')
+        return redirect(url_for('login'))
+    return render_template('register.html', form=form)
 
-# Fungsi WP (Weight Product)
-def weight_product(criteria_weights, data):
-    data = np.array(data)
-    criteria_weights = np.array(criteria_weights)
-    weighted_product = np.prod(np.power(data, criteria_weights), axis=1)
-    return weighted_product
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT * FROM user WHERE email=%s", [form.username.data])
+        user = cur.fetchone()
+        cur.close()
+        if user and bcrypt.check_password_hash(user[3], form.password.data):
+            session['username'] = user[1]  # Storing username in session
+            flash('Login successful!', 'success')
+            return redirect(url_for('home'))
+        else:
+            flash('Login failed. Check email and/or password', 'danger')
+    return render_template('login.html', form=form)
 
-@app.route('/dashboard')
-def dashboard():
-    return render_template('dashboard.html')
+@app.route('/logout')
+def logout():
+    session.pop('username', None)  # Removing username from session
+    flash('You have been logged out.', 'info')
+    return redirect(url_for('login'))
 
-@app.route('/', methods=['GET', 'POST'])
-def index():
-    result = pd.DataFrame()
-    if request.method == 'POST':
-        efektifitas = float(request.form['efektifitas'])
-        efek_samping = float(request.form['efek_samping'])
-        harga = float(request.form['harga'])
-        
-        # Bobot kriteria
-        criteria_weights = [efektifitas, efek_samping, harga]
-        
-        # Normalisasi bobot kriteria
-        criteria_weights = [w / sum(criteria_weights) for w in criteria_weights]
-        
-        # Hitung WP
-        df['Score'] = weight_product(criteria_weights, df[['Efektifitas', 'Efek Samping', 'Harga']])
-        
-        # Sort berdasarkan score tertinggi
-        result = df.sort_values(by='Score', ascending=False).reset_index(drop=True)
-    
-    return render_template('index.html', result=result, data=df)
+@app.route('/home')
+def home():
+    username = session.get('username')  # Getting username from session
+    return render_template('dashboard.html', username=username)
+
+@app.route('/profile')
+def profile():
+    if 'username' not in session:
+        flash('Please log in to access this page.', 'warning')
+        return redirect(url_for('login'))
+
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT username, email FROM user WHERE username=%s", [session['username']])
+    user = cur.fetchone()
+    cur.close()
+
+    if user:
+        return render_template('profile.html', username=user[0], email=user[1])
+    else:
+        flash('User not found.', 'danger')
+        return redirect(url_for('home'))
 
 if __name__ == '__main__':
     app.run(debug=True)

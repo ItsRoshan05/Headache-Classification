@@ -1,3 +1,4 @@
 pandas
 flask
 numpy
+pip install Flask Flask-WTF Flask-Bcrypt Flask-MySQL
