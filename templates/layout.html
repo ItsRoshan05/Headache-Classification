@@ -35,6 +35,8 @@
   <!-- summernote -->
   <link rel="stylesheet" href="{{ url_for('static', filename='adminlte/plugins/summernote/summernote-bs4.min.css') }}">
 
+  
+  {% block csstambahan %}{% endblock %}
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
@@ -117,7 +119,7 @@
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-table"></i>
               <p>
-                Tables
+                Master tables
                 <i class="fas fa-angle-left right"></i>
               </p>
             </a>
@@ -126,6 +128,12 @@
                 <a href="pages/tables/simple.html" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Simple Tables</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ url_for('testing') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Testing</p>
                 </a>
               </li>
               <li class="nav-item">
@@ -238,5 +246,7 @@
 <!-- AdminLTE App -->
 <script src="{{ url_for('static', filename='adminlte/dist/js/adminlte.js') }}"></script>
 
+
+{% block jstambahan %}{% endblock %}
 </body>
 </html>

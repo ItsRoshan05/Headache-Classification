@@ -3,6 +3,7 @@ from flask_mysqldb import MySQL
 from flask_bcrypt import Bcrypt
 from forms import RegistrationForm, LoginForm
 from config import Config
+from decorators import login_required
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -47,11 +48,19 @@ def logout():
     return redirect(url_for('login'))
 
 @app.route('/home')
+@login_required
 def home():
     username = session.get('username')  # Getting username from session
     return render_template('dashboard.html', username=username)
 
+@app.route('/testing')
+@login_required
+def testing():
+    username = session.get('username')  # Getting username from session
+    return render_template('testing.html',username=username)
+
 @app.route('/profile')
+@login_required
 def profile():
     if 'username' not in session:
         flash('Please log in to access this page.', 'warning')
