@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Klasifikasi Obat Sakit Kepala</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">Klasifikasi Obat Sakit Kepala</h1>
+        <form method="POST" class="mt-4">
+            <div class="form-group">
+                <label for="efektifitas">Bobot Efektifitas:</label>
+                <select class="form-control" id="efektifitas" name="efektifitas" required>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="efek_samping">Bobot Efek Samping:</label>
+                <select class="form-control" id="efek_samping" name="efek_samping" required>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="harga">Bobot Harga:</label>
+                <select class="form-control" id="harga" name="harga" required>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Klasifikasikan</button>
+        </form>
+
+        {% if not result.empty %}
+        <h2 class="mt-5">Hasil Klasifikasi:</h2>
+        <table class="table table-bordered mt-3">
+            <thead>
+                <tr>
+                    <th>Obat</th>
+                    <th>Efektifitas</th>
+                    <th>Efek Samping</th>
+                    <th>Harga</th>
+                    <th>Score</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in range(result.shape[0]) %}
+                <tr>
+                    <td>{{ result.iloc[i]['Obat'] }}</td>
+                    <td>{{ result.iloc[i]['Efektifitas'] }}</td>
+                    <td>{{ result.iloc[i]['Efek Samping'] }}</td>
+                    <td>{{ result.iloc[i]['Harga'] }}</td>
+                    <td>{{ result.iloc[i]['Score'] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
