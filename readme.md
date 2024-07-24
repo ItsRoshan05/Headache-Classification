@@ -44,7 +44,11 @@ Aplikasi ini digunakan untuk mengklasifikasikan obat sakit kepala menggunakan me
     pip install -r requirements.txt
     ```
 
-4. Jalankan aplikasi Flask:
+5. Lakukan configurasi:
+    Ganti config.example.py dengan config.py
+    lalu sesuaikan configurasi
+
+6. Jalankan aplikasi Flask:
     ```sh
     python app.py
     ```
