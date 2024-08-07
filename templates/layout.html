@@ -85,8 +85,8 @@
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="{{ url_for('home') }}" class="brand-link">
-      <img src="{{ url_for('static', filename='adminlte/dist/img/AdminLTELogo.png') }}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-      <span class="brand-text font-weight-light">AdminLTE 3</span>
+      <img src="{{ url_for('static', filename='client/img/logoheru-removebg-preview.png') }}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+      <span class="brand-text font-weight-light">Sahabat Palabuan</span>
     </a>
 
     <!-- Sidebar -->
@@ -115,6 +115,14 @@
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
+               <li class="nav-item">
+                <a href="{{ url_for('prediksi') }}" class="nav-link">
+                <i class="nav-icon fas fa-cogs"></i>
+                <p>
+                Prediksi
+                </p>
+                </a>
+                </li>
           <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-table"></i>
@@ -125,27 +133,15 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="pages/tables/simple.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Simple Tables</p>
+                <a href="{{ url_for('users') }}" class="nav-link">
+                  <i class="fa fa-user nav-icon"></i>
+                  <p>Users</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{{ url_for('testing') }}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Testing</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/tables/data.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>DataTables</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/tables/jsgrid.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>jsGrid</p>
+                <a href="{{ url_for('predictions') }}" class="nav-link">
+                  <i class="fa fa-database nav-icon"></i>
+                  <p>Predictions</p>
                 </a>
               </li>
             </ul>
@@ -188,10 +184,10 @@
   <!-- /.content-wrapper -->
 
   <footer class="main-footer">
-    <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong>
+    <strong>Copyright &copy; 2024 <a href="#">Sahabat Palabuan</a>.</strong>
     All rights reserved.
     <div class="float-right d-none d-sm-inline-block">
-      <b>Version</b> 3.2.0
+      <b>Version</b> 0.4
     </div>
   </footer>
 

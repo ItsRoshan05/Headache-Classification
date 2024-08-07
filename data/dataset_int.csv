@@ -1,19 +1,11 @@
 Obat,Efektifitas,Efek Samping,Harga
-Paracetamol,7,4,8
-Ibuprofen,7,5,9
-Aspirin,9,7,9
-Caffein,9,5,4
-Acetaminophen,7,8,4
-Naproxen,9,3,9
-Ketorolac,9,5,10
-Meperidine,8,5,6
-Tramadol,7,3,5
-Diclofenac,8,7,5
-Celecoxib,8,7,6
-Butalbital,7,6,3
-Ergotamine,7,6,9
-Sumatriptan,9,5,4
-Rizatriptan,7,6,3
-Zolmitriptan,9,3,2
-Naratriptan,8,3,5
-Almotriptan,7,4,5
+Obat A,0.8,0.2,0.0
+Obat B,0.9,0.1,0.5
+Obat C,0.85,0.15,0.25
+Obat D,0.7,0.25,0.0
+Obat E,0.75,0.2,0.1
+Obat F,0.8,0.18,0.03
+Obat G,0.95,0.05,1.0
+Obat H,0.9,0.12,0.75
+Obat I,0.78,0.22,0.2
+Obat J,0.85,0.1,0.8

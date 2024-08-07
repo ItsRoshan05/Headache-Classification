@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hasil Prediksi</title>
+    <!-- Bootstrap CSS -->
+    <link href="{{ url_for('static', filename='client/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .card {
+            border-radius: 1rem;
+        }
+        .table-responsive {
+            max-height: 500px;
+        }
+        .table {
+            border-radius: 0.5rem;
+            overflow: hidden; /* Menyembunyikan bagian yang melampaui border-radius */
+            background: linear-gradient(180deg, #e0f7fa, #80deea); /* Gradiend biru dari terang ke gelap */
+            border-collapse: separate; /* Memungkinkan border-radius berfungsi dengan benar */
+            border-spacing: 0; /* Menghilangkan jarak antara border dan isi tabel */
+        }
+        .table th, .table td {
+            vertical-align: middle;
+            text-align: left; /* Mengatur teks agar rata kiri */
+            padding: 1rem; /* Menambahkan padding di sekitar teks */
+        }
+        .table thead th {
+            background-color: #0097a7; /* Warna latar belakang header tabel */
+            color: white; /* Warna teks header tabel */
+            border-bottom: 2px solid #00796b; /* Garis bawah header tabel */
+        }
+        .table tbody tr:hover {
+            background-color: #b2ebf2; /* Warna latar belakang saat hover */
+        }
+        .table thead th, .table tbody td {
+            border-bottom: 1px solid #80deea; /* Garis bawah di setiap baris tabel */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container mt-5">
+        <div class="card shadow-sm border-light">
+            <div class="card-body">
+                <h2 class="card-title mb-4">Hasil Prediksi</h2>
+                <p class="lead">Nama: <strong>{{ name }}</strong></p>
+                <p class="lead">Usia: <strong>{{ age }}</strong></p>
+                <h3 class="mt-4">Obat yang Direkomendasikan Berdasarkan Skor</h3>
+                
+                {% if top_recommendation %}
+                <p class="mb-3">
+                    Obat yang paling direkomendasikan adalah <strong>{{ top_recommendation['Nama Obat'] }}</strong> dengan skor <strong>{{ top_recommendation['Score'] }}</strong>.
+                    Ini karena obat tersebut memiliki kombinasi kriteria terbaik berdasarkan penilaian Anda dan cocok untuk <strong>{{ top_recommendation['Bagian Sakit Kepala'] }}</strong>.
+                </p>
+                {% else %}
+                <p>Maaf, tidak ada obat yang memenuhi kriteria Anda.</p>
+                {% endif %}
+                
+                <div class="table-responsive">
+                    {{ result_html | safe }}
+                </div>
+                
+                <a href="{{ url_for('client') }}" class="btn btn-primary mt-4">Kembali ke Halaman Utama</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="{{ url_for('static', filename='client/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+</body>
+
+</html>

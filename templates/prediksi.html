@@ -1,0 +1,68 @@
+{% extends "layout.html" %}
+
+{% block title %}Prediksi Obat Sakit Kepala{% endblock %}
+
+{% block contentheader %}
+Prediksi Obat Sakit Kepala
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <form method="POST">
+    <div class="form-group">
+      <label for="name">Nama</label>
+      <input type="text" class="form-control" id="name" name="name" required>
+    </div>
+    <div class="form-group">
+      <label for="age">Umur</label>
+      <input type="number" class="form-control" id="age" name="age" required>
+    </div>
+    <div class="form-group">
+      <label for="efektifitas">Efektifitas</label>
+      <input type="number" step="0.01" class="form-control" id="efektifitas" name="efektifitas" required>
+    </div>
+    <div class="form-group">
+      <label for="efek_samping">Efek Samping</label>
+      <input type="number" step="0.01" class="form-control" id="efek_samping" name="efek_samping" required>
+    </div>
+    <div class="form-group">
+      <label for="harga">Harga</label>
+      <input type="number" step="0.01" class="form-control" id="harga" name="harga" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Prediksi</button>
+  </form>
+</div>
+
+{% if not result.empty %}
+<div class="container mt-5">
+  <h3>Hasil Prediksi</h3>
+  <div class="alert alert-info">
+    Obat yang direkomendasikan adalah <strong>{{ result.iloc[0]['Obat'] }}</strong> karena memiliki nilai efektivitas {{ result.iloc[0]['Efektifitas'] }}, efek samping {{ result.iloc[0]['Efek Samping'] }}, dan harga {{ result.iloc[0]['Harga'] }} dengan skor tertinggi yaitu {{ result.iloc[0]['Score'] }}.
+  </div>
+  <table class="table table-striped table-bordered">
+    <thead class="thead-dark">
+      <tr>
+        <th>No</th>
+        <th>Obat</th>
+        <th>Efektifitas</th>
+        <th>Efek Samping</th>
+        <th>Harga</th>
+        <th>Score</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for index, row in result.iterrows() %}
+      <tr>
+        <td>{{ index + 1 }}</td>
+        <td>{{ row.Obat }}</td>
+        <td>{{ row.Efektifitas }}</td>
+        <td>{{ row['Efek Samping'] }}</td>
+        <td>{{ row.Harga }}</td>
+        <td>{{ row.Score }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endif %}
+{% endblock %}

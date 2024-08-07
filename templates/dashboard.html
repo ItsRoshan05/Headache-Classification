@@ -7,9 +7,240 @@ Dashboard
 {% endblock %}
 
 {% block contentheader2 %}
-Dashboard
+Gambaran Umum
 {% endblock %}
 
 {% block content %}
-<h1>Welcome to the Admin Dashboard</h1>
+<div class="container mt-4">
+    <div class="row">
+        <!-- Welcome Message -->
+        <div class="col-12 mb-4">
+            <div class="alert alert-info d-flex align-items-center">
+                <i class="fas fa-user-circle fa-2x me-3"></i>
+                <div>
+                    <h4 class="mb-0">Selamat Datang, {{ username }}!</h4>
+                    <p class="mb-0">Berikut adalah gambaran umum mengenai pertumbuhan pengguna, distribusi rekomendasi, distribusi kategori usia, dan efektivitas obat.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Line Chart for User Growth -->
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow-sm border-primary">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="card-title mb-0">Pertumbuhan Pengguna dari Waktu ke Waktu</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="userGrowthChart" style="height: 400px;"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Doughnut Chart for Recommendation Distribution -->
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow-sm border-info">
+                <div class="card-header bg-info text-white">
+                    <h5 class="card-title mb-0">Distribusi Rekomendasi</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="recommendationChart" style="height: 400px;"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bar Chart for Age Category Distribution -->
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow-sm border-success">
+                <div class="card-header bg-success text-white">
+                    <h5 class="card-title mb-0">Distribusi Kategori Usia</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="ageCategoryChart" style="height: 400px;"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bar Chart for Drug Effectiveness -->
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow-sm border-warning">
+                <div class="card-header bg-warning text-white">
+                    <h5 class="card-title mb-0">Efektivitas Obat</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="drugEffectivenessChart" style="height: 400px;"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block jstambahan %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+$(document).ready(function() {
+    // User Growth Chart
+    $.getJSON('{{ url_for('user_growth') }}', function(data) {
+        var ctx = document.getElementById('userGrowthChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: data.dates,
+                datasets: [{
+                    label: 'Pertumbuhan Pengguna',
+                    data: data.counts,
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    backgroundColor: 'rgba(75, 192, 192, 0.1)',  // Reduced transparency
+                    borderWidth: 2,
+                    pointRadius: 5,
+                    pointHoverRadius: 7
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Tanggal'
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Jumlah Pengguna'
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        position: 'top'
+                    }
+                }
+            }
+        });
+    });
+
+    // Recommendation Distribution Chart
+    $.getJSON('{{ url_for('recommendation_distribution') }}', function(data) {
+        var ctx = document.getElementById('recommendationChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: data.labels,
+                datasets: [{
+                    label: 'Distribusi Rekomendasi',
+                    data: data.data,
+                    backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#E7E9ED', '#4BC0C0'],  // Solid colors
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top'
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(tooltipItem) {
+                                return tooltipItem.label + ': ' + tooltipItem.raw;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    });
+
+    // Age Category Distribution Chart
+    $.getJSON('{{ url_for('age_category_distribution') }}', function(data) {
+        var ctx = document.getElementById('ageCategoryChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: data.labels,
+                datasets: [{
+                    label: 'Distribusi Kategori Usia',
+                    data: data.data,
+                    backgroundColor: 'rgba(153, 102, 255, 0.8)',  // Less transparent
+                    borderColor: 'rgba(153, 102, 255, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Kategori Usia'
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Jumlah'
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        position: 'top'
+                    }
+                }
+            }
+        });
+    });
+
+    // Drug Effectiveness Chart
+    $.getJSON('{{ url_for('drug_effectiveness') }}', function(data) {
+        var ctx = document.getElementById('drugEffectivenessChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: data.labels,
+                datasets: [{
+                    label: 'Efektivitas Obat',
+                    data: data.data,
+                    backgroundColor: 'rgba(255, 159, 64, 0.8)',  // Less transparent
+                    borderColor: 'rgba(255, 159, 64, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Obat yang Direkomendasikan'
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Skor Rata-Rata'
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        position: 'top'
+                    }
+                }
+            }
+        });
+    });
+});
+</script>
 {% endblock %}

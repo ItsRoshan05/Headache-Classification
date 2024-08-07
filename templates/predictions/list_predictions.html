@@ -1,0 +1,148 @@
+{% extends "layout.html" %}
+
+{% block title %}Users{% endblock %}
+
+{% block csstambahan %}
+<link rel="stylesheet"
+    href="{{ url_for('static', filename='adminlte/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
+<link rel="stylesheet"
+    href="{{ url_for('static', filename='adminlte/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
+<link rel="stylesheet"
+    href="{{ url_for('static', filename='adminlte/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
+{% endblock %}
+
+{% block contentheader %}
+Data Users
+{% endblock %}
+
+{% block contentheader2 %}
+Data Users
+{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">User</h3>
+        <div class="card-tools">
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addUserModal">
+                Tambah Data
+            </button>
+        </div>
+    </div>
+    <div class="card-body">
+        {% if session.get('success') %}
+        <div class="alert alert-success">
+            {{ session.get('success') }}
+        </div>
+        {% endif %}
+        <table id="example1" class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Nama</th>
+                    <th>Umur</th>
+                    <th>Kategori Umur</th>
+                    <th>Efektifitas</th>
+                    <th>Dosis</th>
+                    <th>Efek Samping</th>
+                    <th>Harga</th>
+                    <th>Bagian Sakit Kepala</th>
+                    <th>Score</th>
+                    <th>Rekomendasi Obat</th>
+                    <th>Waktu Prediksi</th> <!-- created_at -->
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for data in predictions %}
+                <tr>
+                    <td>{{ data[1] }}</td> <!-- assuming the name is the second column -->
+                    <td>{{ data[2] }}</td> <!-- assuming the email is the third column -->
+                    <td>{{ data[12] }}</td> <!-- assuming the email is the third column -->
+                    <td>{{ data[4] }}</td> <!-- assuming the email is the third column -->
+                    <td>{{ data[5] }}</td> <!-- assuming the email is the third column -->
+                    <td>{{ data[6] }}</td> <!-- assuming the email is the third column -->
+                    <td>{{ data[7] }}</td> <!-- assuming the email is the third column -->
+                    <td>{{ data[8] }}</td> <!-- assuming the email is the third column -->
+                    <td>{{ data[9] }}</td> <!-- assuming the email is the third column -->
+                    <td>{{ data[10] }}</td> <!-- assuming the email is the third column -->
+                    <td>{{ data[11] }}</td> <!-- assuming the email is the third column -->
+                    <td>
+                        <!-- Delete Button with Icon -->
+                        <form action="{{ url_for('delete_prediction', id=data[0]) }}"
+                            method="POST" class="d-inline">
+                            <input type="hidden" name="_method" value="DELETE">
+                            <button type="submit" class="btn btn-danger btn-sm"
+                                onclick="return confirm('Are you sure?')" title="Delete">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+{% endblock %}
+
+{% block jstambahan %}
+<!-- Menggunakan url_for untuk memanggil file JavaScript dari folder static -->
+<script
+    src="{{ url_for('static', filename='adminlte/plugins/datatables/jquery.dataTables.min.js') }}">
+</script>
+<script
+    src="{{ url_for('static', filename='adminlte/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}">
+</script>
+<script
+    src="{{ url_for('static', filename='adminlte/plugins/datatables-responsive/js/dataTables.responsive.min.js') }}">
+</script>
+<script
+    src="{{ url_for('static', filename='adminlte/plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}">
+</script>
+<script
+    src="{{ url_for('static', filename='adminlte/plugins/datatables-buttons/js/dataTables.buttons.min.js') }}">
+</script>
+<script
+    src="{{ url_for('static', filename='adminlte/plugins/datatables-buttons/js/buttons.bootstrap4.min.js') }}">
+</script>
+<script
+    src="{{ url_for('static', filename='adminlte/plugins/jszip/jszip.min.js') }}">
+</script>
+<script
+    src="{{ url_for('static', filename='adminlte/plugins/pdfmake/pdfmake.min.js') }}">
+</script>
+<script
+    src="{{ url_for('static', filename='adminlte/plugins/pdfmake/vfs_fonts.js') }}">
+</script>
+<script
+    src="{{ url_for('static', filename='adminlte/plugins/datatables-buttons/js/buttons.html5.min.js') }}">
+</script>
+<script
+    src="{{ url_for('static', filename='adminlte/plugins/datatables-buttons/js/buttons.print.min.js') }}">
+</script>
+<script
+    src="{{ url_for('static', filename='adminlte/plugins/datatables-buttons/js/buttons.colVis.min.js') }}">
+</script>
+<script>
+    $(function () {
+        $("#example1").DataTable({
+            "responsive": true,
+            "lengthChange": false,
+            "autoWidth": false,
+            "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+        }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+        $('#example2').DataTable({
+            "paging": true,
+            "lengthChange": false,
+            "searching": false,
+            "ordering": true,
+            "info": true,
+            "autoWidth": false,
+            "responsive": true,
+        });
+    });
+</script>
+{% endblock %}
